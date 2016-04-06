@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test</title>  
+  
+    <!--quickt library-->
+    <script src="dev/quickt.js"></script>
+    
+    <!--test js-->
+    <script src="test.js"></script>
+  </head>
+  
+  <!--html-->
+  <body pre-parsing="init();" post-parsing="done();">
+    <div title="${Hello_World}">${Hello_World}</div>  
+    <div>&nbsp;</div>
+    
+    <!--test show-when-->
+    <div>
+      <button onclick="toggle_content_1();">Toggle Content 1</button>
+    </div>
+    <div id="Content-1" show-when="Show_Flag_1==true">Content 1</div>
+    <div>&nbsp;</div>
+    
+    <!--test hide-when-->
+    <div>
+      <button onclick="toggle_content_2();">Toggle Content 2</button>
+    </div>
+    <div id="Content-2" hide-when="Show_Flag_2==false">Content 2</div>
+    <div>&nbsp;</div>
+    
+    <!--test clone-with (array)-->
+    <big>Test_Array:</big>
+    <div id="Test-Array-Holder">
+      <span clone-with="var Index in Test_Array" clone-var="Index">
+        ${Test_Array[Index]};
+      </span>
+    </div>
+    <button onclick="shift_test_array();">Shift</button>
+    <div>&nbsp;</div>
+    
+    <!--test clone-with (object)-->    
+    <big>Test_Object:</big>
+    <div id="Test-Object-Holder">
+      <span clone-with="var Key in Test_Object" clone-var="Key">
+        ${Key}:${Test_Object[Key]};
+      </span>
+    </div>
+    <button onclick="swap_test_object();">Swap</button>
+  </body>
+</html>
+
+<!--end of file-->
