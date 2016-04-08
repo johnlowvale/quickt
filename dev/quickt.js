@@ -12,7 +12,8 @@
  * 1.5 Added 'post' function
  * 1.6 'get' result is text, 'post' result is object
  * 1.7 Fixed error when JSON.parse a failed request    
- * 1.8 Added content-eval attribute
+ * 1.8 Added content-eval attribute  
+ * 1.9 Load content in sync mode when 'content-eval' is specified
  * 
  * Features: 
  * pre-parsing, post-parsing, show-when, hide-when, 
@@ -22,7 +23,7 @@
  * Browser with ECMAScript 6 support.
  *
  * @file    Main source code file
- * @version 1.8
+ * @version 1.9
  * @author  John Lowvale
  */
 //DO NOT USE STRICT, 'eval' CAN'T CREATE LOCAL VARIABLES
@@ -87,7 +88,7 @@ function set_cookie(cname,cvalue,exdays) {
  * HTTP GET       
  * Callback is function(Error,Data)
  */        
-function get(Url,Data,Callback) {
+function get(Url,Data,Callback,Mode) {
   var SYNC             = false;
   var ASYNC            = true;
   var UNSENT           = 0;
@@ -110,8 +111,11 @@ function get(Url,Data,Callback) {
     }
   };                              
   
-  //open connection and send
-  Request.open("GET",Url,ASYNC);
+  //open connection and send       
+  if (Mode==null)
+    Request.open("GET",Url,ASYNC);
+  else
+    Request.open("GET",Url,Mode);
   Request.send();
 }  
 
@@ -119,7 +123,7 @@ function get(Url,Data,Callback) {
  * HTTP POST       
  * Callback is function(Error,Data)
  */        
-function post(Url,Data,Callback) {
+function post(Url,Data,Callback,Mode) {
   var SYNC             = false;
   var ASYNC            = true;
   var UNSENT           = 0;
@@ -142,8 +146,11 @@ function post(Url,Data,Callback) {
     }
   };                              
   
-  //open connection and send
-  Request.open("POST",Url,ASYNC);    
+  //open connection and send       
+  if (Mode==null)
+    Request.open("POST",Url,ASYNC);
+  else                             
+    Request.open("POST",Url,Mode);
   Request.setRequestHeader("Content-Type","application/json");
   Request.send(JSON.stringify(Data));
 }
@@ -270,7 +277,14 @@ function parse(Param) {
       
     //check attribute content-url
     if (Node_Instance.hasAttribute("content-url")) {
+      var SYNC        = false;
+      var ASYNC       = true;
       var Content_Url = Node_Instance.getAttribute("content-url");
+                      
+      //check 'content-eval' attribute
+      var Mode = ASYNC;
+      if (Node_Instance.hasAttribute("content-eval"))
+        Mode = SYNC;
       
       //get content
       get(Content_Url,{},function(Error,Data){
@@ -291,7 +305,8 @@ function parse(Param) {
           if (Content_Eval=="true")
             geval(Data);
         }
-      });//get
+      },
+      Mode);//get
     }
     
     //evaluate attribute values
