@@ -209,7 +209,9 @@ function evaluate(Template_String) {
 } 
 
 /**
- * Parse attributes & texts with es6 template syntax
+ * Parse attributes & texts with es6 template syntax.    
+ * Param is an element or string which represents id of an element,
+ * id comes without hash.
  */
 function parse(Param) {
   var Node_Instance = {};

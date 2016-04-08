@@ -1,0 +1,39 @@
+
+FUNCTION LIST
+================================================================================
+
+log
+A quick hand to call console.log
+
+chr
+Get a character from character code
+
+ord
+Get character code from character
+
+cookie
+Get or set a browser cookie
+
+get
+Do an HTTP GET request
+
+post
+Do an HTTP POST request
+
+e
+Get and element by id (without hash)
+
+ehtml
+Get root html element (html tag)
+
+ebody
+Get document body element (body tag)
+
+evaluate
+Evaluate a template literal string
+
+parse
+Parse an HTML element and its children, process library tags,
+and evaluate template literal strings.
+
+//end of file
