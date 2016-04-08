@@ -11,17 +11,18 @@
  * 1.4 Added 'get' function
  * 1.5 Added 'post' function
  * 1.6 'get' result is text, 'post' result is object
- * 1.7 Fixed error when JSON.parse a failed request
+ * 1.7 Fixed error when JSON.parse a failed request    
+ * 1.8 Added content-eval attribute
  * 
  * Features: 
  * pre-parsing, post-parsing, show-when, hide-when, 
- * clone-with, clone-var, content-url.
+ * clone-with, clone-var, content-url, content-eval.
  *
  * Requirements:
  * Browser with ECMAScript 6 support.
  *
  * @file    Main source code file
- * @version 1.7
+ * @version 1.8
  * @author  John Lowvale
  */
 //DO NOT USE STRICT, 'eval' CAN'T CREATE LOCAL VARIABLES
@@ -282,6 +283,13 @@ function parse(Param) {
         for (var Index=0; Index<Child_Nodes.length; Index++) {
           var Child_Skip = parse(Child_Nodes[Index]);
           Index += Child_Skip;
+        }       
+        
+        //check 'content-eval' attribute
+        if (Node_Instance.hasAttribute("content-eval")) {
+          var Content_Eval = Node_Instance.getAttribute("content-eval");
+          if (Content_Eval=="true")
+            geval(Data);
         }
       });//get
     }
