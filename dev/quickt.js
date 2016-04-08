@@ -3,17 +3,18 @@
  * Freeware by Stinte Ltd
  * 
  * Version info:
- * 0.1 Preliminary code
- * 1.0 Initial release, able to render the whole page once.
- * 1.1 Function 'parse' may be called again to update contents
- * 1.2 First optimisation check   
- * 1.3 Added content-url attribute              
- * 1.4 Added 'get' function
- * 1.5 Added 'post' function
- * 1.6 'get' result is text, 'post' result is object
- * 1.7 Fixed error when JSON.parse a failed request    
- * 1.8 Added content-eval attribute  
- * 1.9 Load content in sync mode when 'content-eval' is specified
+ * 0.1  Preliminary code
+ * 1.0  Initial release, able to render the whole page once.
+ * 1.1  Function 'parse' may be called again to update contents
+ * 1.2  First optimisation check   
+ * 1.3  Added content-url attribute              
+ * 1.4  Added 'get' function
+ * 1.5  Added 'post' function
+ * 1.6  'get' result is text, 'post' result is object
+ * 1.7  Fixed error when JSON.parse a failed request    
+ * 1.8  Added content-eval attribute  
+ * 1.9  Load content in sync mode when 'content-eval' is specified   
+ * 1.10 Use .attributes instead of .getAttributeNames on element
  * 
  * Features: 
  * pre-parsing, post-parsing, show-when, hide-when, 
@@ -23,7 +24,7 @@
  * Browser with ECMAScript 6 support.
  *
  * @file    Main source code file
- * @version 1.9
+ * @version 1.10
  * @author  John Lowvale
  */
 //DO NOT USE STRICT, 'eval' CAN'T CREATE LOCAL VARIABLES
@@ -310,9 +311,9 @@ function parse(Param) {
     }
     
     //evaluate attribute values
-    var Attributes = Node_Instance.getAttributeNames();
+    var Attributes = Node_Instance.attributes;
     for (var Index=0; Index<Attributes.length; Index++) {
-      var Name  = Attributes[Index];
+      var Name  = Attributes[Index].name;      
       var Value = Node_Instance.getAttribute(Name);
       Node_Instance.setAttribute(Name,evaluate(Value));
     }
