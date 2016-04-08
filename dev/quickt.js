@@ -14,7 +14,8 @@
  * 1.7  Fixed error when JSON.parse a failed request    
  * 1.8  Added content-eval attribute  
  * 1.9  Load content in sync mode when 'content-eval' is specified   
- * 1.10 Use .attributes instead of .getAttributeNames on element
+ * 1.10 Use .attributes instead of .getAttributeNames on element  
+ * 1.11 Unify get_cookie & set_cookie into 'cookie' function
  * 
  * Features: 
  * pre-parsing, post-parsing, show-when, hide-when, 
@@ -24,7 +25,7 @@
  * Browser with ECMAScript 6 support.
  *
  * @file    Main source code file
- * @version 1.10
+ * @version 1.11
  * @author  John Lowvale
  */
 //DO NOT USE STRICT, 'eval' CAN'T CREATE LOCAL VARIABLES
@@ -60,29 +61,43 @@ function log(Var) {
 } 
 
 /**
- * Get a cookie
- */
-function get_cookie(cname) {
-  var name = cname+"=";
-  var ca   = document.cookie.split(';');  
-  for (var i=0; i<ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') 
-      c = c.substring(1);
-    if (c.indexOf(name) == 0) 
-      return c.substring(name.length,c.length);
-  }
-  return "";
+ * Get character from character code
+ */                                 
+function chr(Code) {
+  return String.fromCharCode(Code);
 }
 
 /**
- * Set a cookie
+ * Get character code from character
+ */                                 
+function ord(Char) {
+  return Char.charCodeAt(0);
+}
+
+/**
+ * Get or set a cookie
+ * Get when Value is null
+ * Set wehn Value is not null
  */
-function set_cookie(cname,cvalue,exdays) {
-  var d = new Date();
-  d.setTime(d.getTime()+(exdays*24*60*60*1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = cname+"="+cvalue+"; "+expires;
+function cookie(Name,Value,Exdays) {
+  if (Value==null) {
+    var Name    = Name+"=";
+    var Cookies = document.cookie.split(";");  
+    for (var Index=0; Index<Cookies.length; Index++) {
+      var Cookie = Cookies[Index];
+      while (Cookie.charAt(0)==chr(32)) 
+        Cookie = Cookie.substring(1);
+      if (Cookie.indexOf(Name)==0) 
+        return Cookie.substring(Name.length,Cookie.length);
+    }
+    return "";
+  }
+  else {
+    var Now = new Date();
+    Now.setTime(Now.getTime()+(Exdays*24*60*60*1000));
+    var Expires = "expires="+Now.toUTCString();
+    document.cookie = Name+"="+Value+";"+Expires;
+  }
 }
 
 /**
