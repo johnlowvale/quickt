@@ -1,6 +1,6 @@
 /**
  * Quickt - Quick Templating Library for HTML
- * Freeware by Stitec Ltd
+ * Freeware by Tesinn Ltd
  * 
  * Version info:
  * 0.1  Preliminary code
